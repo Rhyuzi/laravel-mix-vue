@@ -1,0 +1,27 @@
+/* .alert {
+    font-size: 15px;
+} */
+
+.text-white {
+    color: white;
+}
+.text-white:hover {
+    color: grey;
+}
+/* .li-hover:hover{
+    color: grey;
+} */
+
+@media (min-width: 1200px) {
+    .x_panel{
+        margin-left: 230px;
+        max-width: 147.7rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .x_panel {
+        margin-left: 230px;
+        max-width: 115.7rem;
+    }
+  }
