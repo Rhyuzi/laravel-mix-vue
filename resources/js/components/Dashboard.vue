@@ -1,8 +1,9 @@
 <template>
+    <TambahPickup v-if="popupCreate"></TambahPickup>
     <SideBar></SideBar>
     <div class="x_panel">
                   <div class="x_title">
-                    <h2>Default Example <small>Users</small></h2>
+                    <h2>Data Pickup <small>Pelanggan</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -21,7 +22,9 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-
+                    <div>
+                        <button @click="popupCreate = true" class="btn btn-primary">Tambah Data</button>
+                    </div>
                     <Vue3EasyDataTable :headers="headers" :items="dataPicOrd" />
                 </div>
                 </div>
@@ -31,18 +34,23 @@
 // import { DataTable } from "@jobinsjp/vue3-datatable"
 import SideBar from './SideBar.vue';
 import Vue3EasyDataTable from 'vue3-easy-data-table'
-import { get_data_pickup } from '../api/api_helpers'
+import { get_data_city, get_data_pickup, get_data_service } from '../api/api_helpers'
 import 'vue3-easy-data-table/dist/style.css';
+import TambahPickup from './PopupTambahPickup.vue';
 
     export default {
         components: {
             SideBar,
             // DataTable
-            Vue3EasyDataTable
+            Vue3EasyDataTable,
+            TambahPickup
         },
         data() {
             return {
+                popupCreate: false,
                 dataPicOrd: [],
+                dataCity: [],
+                dataService: [],
                 pagination: null,
                 headers: [
                     { text: "ID", value: "POrderNo" },
@@ -66,6 +74,8 @@ import 'vue3-easy-data-table/dist/style.css';
         },
         async mounted() {
             await this.getDataPickup()
+            await this.getDataCity()
+            await this.getDataService()
         },
         methods: {
             async getDataPickup() {
@@ -73,6 +83,16 @@ import 'vue3-easy-data-table/dist/style.css';
 
                 this.dataPicOrd = pickup.data
                 console.error(pickup)
+            },
+            async getDataCity() {
+                const result = await get_data_city('city')
+
+                this.dataCity = result.data
+            },
+            async getDataService() {
+                const result = await get_data_service('service')
+
+                this.dataService = result.data
             }
         }
     }

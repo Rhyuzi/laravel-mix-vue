@@ -22,4 +22,31 @@ export const get_data_pickup = async (endpoint) => {
     } catch (error) {
       throw error;
     }
-  };
+};
+
+export const get_data_city = async (endpoint) => {
+    try {
+      const response = await axios.get(`${apiUrl}/${endpoint}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+};
+
+export const get_data_service = async (endpoint) => {
+    try {
+      const response = await axios.get(`${apiUrl}/${endpoint}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+};
+
+export const add_data_pickup = async (endpoint,payload) => {
+    try {
+      const response = await axios.post(`${apiUrl}/${endpoint}`, payload);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+};
