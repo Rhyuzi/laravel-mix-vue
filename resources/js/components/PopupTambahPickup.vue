@@ -136,6 +136,7 @@
  import useValidate from '@vuelidate/core'
  import { required, numeric, maxLength, helpers, email } from '@vuelidate/validators'
  import { add_data_pickup } from '../api/api_helpers'
+ import { mapGetters } from 'vuex'
 
 
      export default {
@@ -162,7 +163,7 @@
                     isiKiriman: '',
                     berat: '1',
                     banyak: 1,
-                    packing: '',
+                    packing: 0,
                     nilaiBarang: 1,
                     layanan: '',
                     keterangan: ''
@@ -217,6 +218,11 @@
              }
              };
          },
+         computed: {
+            ...mapGetters({
+                dataPicOrd: 'pickup/getDataPickups',
+            }),
+        },
          mounted() {
             // Toast.success('Operation successful!');
             // this.dataCity = this.$parent.dataCity
@@ -292,12 +298,12 @@
                     POrderDEO: JSON.parse(localStorage.Users).name,
                     POrderLocation: JSON.parse(localStorage.Users).UserLocation,
                 }
-                const result = await add_data_pickup('add-pickup-order',param)
+                const result = await this.$store.dispatch('pickup/addDataPickup',param)
 
                 this.$toast.success(result.message);
-                this.dataCity.push(result.data);
+                this.$parent.popupCreate = false
 
-                console.debug('parameter', result.data)
+                console.debug('parameter', this.dataPicOrd)
             },
             showErr(){
                 if (this.v$.formData.pengirim.$error){

@@ -32,6 +32,7 @@
 
 <script>
 // import { DataTable } from "@jobinsjp/vue3-datatable"
+import { mapGetters } from 'vuex'
 import SideBar from './SideBar.vue';
 import Vue3EasyDataTable from 'vue3-easy-data-table'
 import { get_data_city, get_data_pickup, get_data_service } from '../api/api_helpers'
@@ -48,7 +49,7 @@ import TambahPickup from './PopupTambahPickup.vue';
         data() {
             return {
                 popupCreate: false,
-                dataPicOrd: [],
+                // dataPicOrd: [],
                 dataCity: [],
                 dataService: [],
                 pagination: null,
@@ -72,6 +73,11 @@ import TambahPickup from './PopupTambahPickup.vue';
                 data: []
             }
         },
+        computed: {
+            ...mapGetters({
+                dataPicOrd: 'pickup/getDataPickups',
+            }),
+        },
         async mounted() {
             await this.getDataPickup()
             await this.getDataCity()
@@ -79,11 +85,9 @@ import TambahPickup from './PopupTambahPickup.vue';
         },
         methods: {
             async getDataPickup() {
-                const pickup = await get_data_pickup('pickup-order')
-
-                this.dataPicOrd = pickup.data
-                console.error(pickup)
-            },
+                await this.$store.dispatch('pickup/getDataPickup')
+                console.debug('ie yeh',this.dataPicOrd)
+        },
             async getDataCity() {
                 const result = await get_data_city('city')
 

@@ -122,6 +122,7 @@ class PickupOrderController extends Controller
             'ip_address' => $publicIP
         ];
         $insertData = PickUpOrder::create($dataPost);
+        $insertData->POrderNo = $insertData->id;
         $response = [
             'error' => false,
             'message' => 'Data berhasil ditambahkan!',

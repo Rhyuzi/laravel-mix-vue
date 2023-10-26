@@ -5,11 +5,12 @@ import { createApp } from 'vue';
 import AppComponent from './App.vue';
 import router from './router/index';
 import VueToast from 'vue-toast-notification';
+import store from './store';
 
 const app = createApp(AppComponent);
 
 // Use VueToast as a plugin
 app.use(VueToast);
-
+app.use(store)
 app.use(router);
 app.mount('#app');

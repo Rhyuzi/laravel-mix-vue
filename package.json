@@ -29,6 +29,7 @@
         "vue-toasted": "^1.1.28",
         "vue3-easy-data-table": "^1.5.47",
         "vue3-select": "^0.1.2",
+        "vuex": "^4.1.0",
         "yup": "^1.2.0"
     }
 }
