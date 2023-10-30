@@ -85,3 +85,16 @@ export const getTrackingById = async (endpoint,payload) => {
       throw error;
     }
 };
+
+export const get_data_tracking = async (endpoint,payload) => {
+    try {
+      const response = await axios.get(`${apiUrl}/${endpoint}`,{
+        params: payload,
+      }
+      );
+      console.debug('response',response)
+      return response;
+    } catch (error) {
+      throw error;
+    }
+};

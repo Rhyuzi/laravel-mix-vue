@@ -105,8 +105,8 @@ import Loading from './Loading.vue';
             }),
         },
         async mounted() {
-            await getCoverageArea()
-            await getTrackingById()
+            // await getCoverageArea()
+            // await getTrackingById()
             await this.getDataPickup()
             await this.getDataCity()
             await this.getDataService()
@@ -115,7 +115,7 @@ import Loading from './Loading.vue';
             async getDataPickup() {
                 await this.$store.dispatch('pickup/getDataPickup')
                 console.debug('ie yeh',this.dataPicOrd)
-        },
+            },
             async getDataCity() {
                 const result = await get_data_city('city')
 

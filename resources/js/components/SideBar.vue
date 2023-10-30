@@ -34,8 +34,8 @@
                     <ul v-if="ddDash" class="nav child_menu" style="display: block;">
                       <!-- <li><a href="tables.html">Tables</a></li>
                       <li class="current-page"><a href="tables_dynamic.html">Table Dynamic</a></li> -->
-                      <li><a class="text-white" href="#">Tracking AWB</a></li>
-                      <li class="current-page"><a href="">Input Pickup-Order</a></li>
+                      <li :class="$route.name == 'tracking' ? 'current-page': ''"><a class="text-white" @click="$router.push('/tracking')">Tracking AWB</a></li>
+                      <li :class="$route.name == 'dashboard' ? 'current-page': ''"><a @click="$router.push('/dashboard')">Input Pickup-Order</a></li>
                       <li><a class="text-white" href="#">Rekapitulasi Harian Pelanggan</a></li>
                     </ul>
                   </li>
@@ -194,7 +194,7 @@
               }
           },
           mounted() {
-
+            console.debug('tou',this.$route.name)
           },
           methods: {
             dropdownDash(){
