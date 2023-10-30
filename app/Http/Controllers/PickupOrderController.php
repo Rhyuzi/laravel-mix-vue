@@ -15,60 +15,66 @@ use Illuminate\Support\Facades\Http;
 class PickupOrderController extends Controller
 {
     public function getCity(){
-        $dataCity = City::all();
-        $response = [
-            'error' => true,
-            'message' => 'Data Kota!',
-            'data' => $dataCity
-        ];
+        try {
+            $dataCity = City::all();
+            $response = [
+                'error' => false,
+                'message' => 'Data Kota!',
+                'data' => $dataCity
+            ];
 
-        return response()->json($response,200);
-
+            return response()->json($response,200);
+        } catch (\Throwable $th) {
+            $response = [
+                'error' => true,
+                'message' => 'Kesalahan pada serverr!',
+                'data' => null
+            ];
+            return response()->json($response,200);
+        }
     }
 
     public function getService(){
-        $dataLayanan = Service::all();
-        $response = [
-            'error' => true,
-            'message' => 'Data Layanan!',
-            'data' => $dataLayanan
+        try {
+            $dataLayanan = Service::all();
+            $response = [
+                'error' => false,
+                'message' => 'Data Layanan!',
+                'data' => $dataLayanan
         ];
-
-        return response()->json($response,200);
-
+            return response()->json($response,200);
+        } catch (\Throwable $th) {
+            $response = [
+                'error' => true,
+                'message' => 'Kesalahan pada serverr!',
+                'data' => null
+            ];
+            return response()->json($response,200);
+        }
     }
 
     public function index(Request $request){
-        // Paginator::useBootstrap('custom_pagination');
-        $customer = Customer::where('id',$request->customer_id)->first();
-
-        $data = PickUpOrder::where('POrderCustNo',$customer->CustNo)->orderBy('POrderDate', 'desc')->get();
-
-        // $total = PickUpOrder::count();
-        // $dataCity = City::all();
-        // $dataService = Service::all();
-
-        // return view('pickup-order',[
-        //     'data' => $data,
-        //     'dataCity' => $dataCity,
-        //     'dataService' => $dataService,
-        //     'total' => $total
-        // ]);
-        $response = [
-            'error' => false,
-            'message' => 'Data Pickup order!',
-            'data' => $data
-        ];
-
-        return response()->json($response,200);
+        try {
+            $customer = Customer::where('id',$request->customer_id)->first();
+            $data = PickUpOrder::where('POrderCustNo',$customer->CustNo)->orderBy('POrderDate', 'desc')->get();
+            $response = [
+                'error' => false,
+                'message' => 'Data Pickup order!',
+                'data' => $data
+            ];
+            return response()->json($response,200);
+        } catch (\Throwable $th) {
+            $response = [
+                'error' => true,
+                'message' => 'Kesalahan pada serverr!',
+                'data' => null
+            ];
+            return response()->json($response,200);
+        }
     }
 
-
     public function insert(Request $request){
-        // $user = unserialize(session('user'));
-        // if(!$user){
-        //     return redirect('/');
-        // }
+       try {
         $cust = Customer::where('id',$request->customer_id)->first();
         $formattedTime = now()->format('Y-m-d H:i:s');
         $response = Http::get('https://api.ipify.org?format=json');
@@ -117,8 +123,8 @@ class PickupOrderController extends Controller
             'POrderWeight' => $request->POrderWeight,
             'POrderIsi' => $request->POrderIsi,
             'POrderService' => $request->POrderService,
-            'POrderDEO' => $request->name,
-            'POrderLocation' => $request->UserLocation,
+            'POrderDEO' => $request->POrderDEO,
+            'POrderLocation' => $request->POrderLocation,
             'ip_address' => $publicIP
         ];
         $insertData = PickUpOrder::create($dataPost);
@@ -130,5 +136,13 @@ class PickupOrderController extends Controller
         ];
 
         return response()->json($response,200);
+       } catch (\Throwable $th) {
+        $response = [
+            'error' => true,
+            'message' => 'Data gagal ditambahkan!',
+            'data' => null
+        ];
+        return response()->json($response,200);
+       }
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <TambahPickup v-if="popupCreate"></TambahPickup>
-    <SideBar></SideBar>
-    <div class="x_panel">
+    <Loading v-if="isLoading"></Loading>
+    <!-- <div class="x_panel">
                   <div class="x_title">
                     <h2>Data Pickup <small>Pelanggan</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -27,7 +27,39 @@
                     </div>
                     <Vue3EasyDataTable :headers="headers" :items="dataPicOrd" />
                 </div>
+                </div> -->
+
+                <div class="">
+                    <SideBar></SideBar>
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Data Pickup <small>Pelanggan</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <div>
+                        <button @click="popupCreate = true" class="btn btn-primary">Tambah Data</button>
+                    </div>
+                    <Vue3EasyDataTable :headers="headers" :items="dataPicOrd" />
+                     </div>
                 </div>
+              </div>
 </template>
 
 <script>
@@ -35,21 +67,22 @@
 import { mapGetters } from 'vuex'
 import SideBar from './SideBar.vue';
 import Vue3EasyDataTable from 'vue3-easy-data-table'
-import { get_data_city, get_data_pickup, get_data_service } from '../api/api_helpers'
+import { get_data_city, getCoverageArea, get_data_service, getTrackingById } from '../api/api_helpers'
 import 'vue3-easy-data-table/dist/style.css';
 import TambahPickup from './PopupTambahPickup.vue';
+import Loading from './Loading.vue';
 
     export default {
         components: {
             SideBar,
-            // DataTable
+            Loading,
             Vue3EasyDataTable,
             TambahPickup
         },
         data() {
             return {
                 popupCreate: false,
-                // dataPicOrd: [],
+                isLoading: false,
                 dataCity: [],
                 dataService: [],
                 pagination: null,
@@ -63,13 +96,6 @@ import TambahPickup from './PopupTambahPickup.vue';
                     // { text: "LAST ATTENDED", value: "lastAttended", width: 200},
                     // { text: "COUNTRY", value: "country"},
                 ],
-                items: [
-                    { player: "Stephen Curry", team: "GSW", number: 30, position: 'G', indicator: {"height": '6-2', "weight": 185}, lastAttended: "Davidson", country: "USA"},
-                    { player: "Lebron James", team: "LAL", number: 6, position: 'F', indicator: {"height": '6-9', "weight": 250}, lastAttended: "St. Vincent-St. Mary HS (OH)", country: "USA"},
-                    { player: "Kevin Durant", team: "BKN", number: 7, position: 'F', indicator: {"height": '6-10', "weight": 240}, lastAttended: "Texas-Austin", country: "USA"},
-                    { player: "Giannis Antetokounmpo", team: "MIL", number: 34, position: 'F', indicator: {"height": '6-11', "weight": 242}, lastAttended: "Filathlitikos", country: "Greece"},
-
-                ],
                 data: []
             }
         },
@@ -79,6 +105,8 @@ import TambahPickup from './PopupTambahPickup.vue';
             }),
         },
         async mounted() {
+            await getCoverageArea()
+            await getTrackingById()
             await this.getDataPickup()
             await this.getDataCity()
             await this.getDataService()

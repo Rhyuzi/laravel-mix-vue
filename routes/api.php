@@ -9,3 +9,6 @@ Route::get('/pickup-order', 'App\Http\Controllers\PickupOrderController@index')-
 Route::get('/city', 'App\Http\Controllers\PickupOrderController@getCity')->name('city');
 Route::get('/service', 'App\Http\Controllers\PickupOrderController@getService')->name('Service');
 Route::post('/add-pickup-order', 'App\Http\Controllers\PickupOrderController@insert')->name('add-pickup-order');
+
+Route::get('/tes', 'App\Http\Controllers\PandusiwiAPI@getCoverageArea')->name('tes');
+Route::get('/get-tracking', 'App\Http\Controllers\PandusiwiAPI@getTracking')->name('get-tracking');

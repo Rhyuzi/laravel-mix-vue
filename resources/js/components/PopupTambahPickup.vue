@@ -224,8 +224,6 @@
             }),
         },
          mounted() {
-            // Toast.success('Operation successful!');
-            // this.dataCity = this.$parent.dataCity
             this.getDataCity()
             this.dataService = this.$parent.dataService
             if (this.dataService.length > 0) {
@@ -274,9 +272,11 @@
                 this.$parent.popupCreate = false
             },
             async createPickup(){
+                this.$parent.isLoading = true
                 this.v$.$validate()
                 if (this.v$.$error) {
                     console.debug('msg err',this.v$.formData.layanan.$errors[0])
+                    this.$parent.isLoading = false
                     this.showErr()
                     return;
                 }
@@ -300,8 +300,11 @@
                 }
                 const result = await this.$store.dispatch('pickup/addDataPickup',param)
 
-                this.$toast.success(result.message);
-                this.$parent.popupCreate = false
+                if (result.error == false) {
+                    this.$parent.isLoading = false
+                    this.$toast.success(result.message);
+                    this.$parent.popupCreate = false
+                }
 
                 console.debug('parameter', this.dataPicOrd)
             },
