@@ -98,3 +98,15 @@ export const get_data_tracking = async (endpoint,payload) => {
       throw error;
     }
 };
+
+export const get_data_resi = async (endpoint,payload) => {
+    try {
+      const response = await axios.get(`${apiUrl}/${endpoint}`,{
+        params: payload,
+      }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+};

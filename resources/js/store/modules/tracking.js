@@ -1,8 +1,9 @@
-import { get_data_tracking } from '../../api/api_helpers'
+import { get_data_tracking, get_data_resi} from '../../api/api_helpers'
 
 const initialState = () => {
     return {
-        tracking: []
+        tracking: [],
+        resi: []
     }
 }
 
@@ -23,6 +24,7 @@ export default {
     },
     getters: {
         getDataTracking: (state) => state.tracking,
+        getResi: (state) => state.resi,
     },
     actions: {
         getDataTracking: async function ({commit}, payload) {
@@ -30,5 +32,13 @@ export default {
            commit('SET', ['tracking', result.data.data])
            return result
         },
+        getDataResiById: async function ({commit}, payload) {
+            const result = await get_data_resi('get-resi',payload)
+            commit('SET', ['resi', result.data.data])
+            return result
+        },
+        // putDataResi: async function ({commit}, payload) {
+        //     commit('SET', ['resi', payload])
+        // }
     },
 }

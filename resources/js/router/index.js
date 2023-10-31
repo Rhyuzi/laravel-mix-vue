@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from '../components/Login.vue';
 import Dashboard from '../components/Dashboard.vue';
 import Tracking from '../components/Tracking.vue';
+import ResiTracking from '../components/ResiTracking.vue';
 import ContactListComponent from '../views/ContactListComponent.vue';
 
 const routes = [
@@ -20,9 +21,9 @@ const routes = [
         component: Tracking
     },
     {
-        path: '/contact-list',
-        // name: 'dashboard',
-        component: ContactListComponent
+        path: '/resi-tracking',
+        name: 'resi-tracking',
+        component: ResiTracking
     }
 ];
 

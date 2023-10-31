@@ -35,7 +35,13 @@
                             </div>
                         </div>
 
-                    <Vue3EasyDataTable :headers="headers" :items="filteredData" @click-row="handleRowClick"/>
+                    <Vue3EasyDataTable :headers="headers" :items="filteredData" @click-row="handleRowClick">
+                        <template #item-operation="{ item }">
+                            <div>
+                                <button @click="handleDetailClick(item)" class="btn btn-default">Detail</button>
+                            </div>
+                        </template>
+                    </Vue3EasyDataTable>
                      </div>
                 </div>
               </div>
@@ -73,7 +79,7 @@ import Loading from './Loading.vue';
                     { text: "PENGIRIM", value: "ConnoteCustName"},
                     { text: "PENERIMA", value: "ConnoteRecvName"},
                     { text: "ISI BARANG", value: "ConnoteContents"},
-                    // { text: "WEIGHT (lbs)", value: "indicator.weight", sortable: true},
+                    { text: "Operasi", value: "operation"},
                     // { text: "LAST ATTENDED", value: "lastAttended", width: 200},
                     // { text: "COUNTRY", value: "country"},
                 ],
@@ -129,8 +135,21 @@ import Loading from './Loading.vue';
                 }
             },
             handleRowClick(item){
-                console.debug('data item', item)
-                // console.debug('data event', event)
+                console.debug('data item handleRowClick', item)
+                this.$store.dispatch('tracking/putDataResi',item)
+                localStorage.setItem('resi',JSON.stringify(item))
+                const routeURL = this.$router.resolve({
+                        name: 'resi-tracking',
+                    }).href;
+
+                    window.open(routeURL, '_blank');
+                // this.$router.push('/resi-tracking')
+            },
+            handleDetailClick(item) {
+                console.debug('data item handleDetailClick', item)
+                if (item) {
+                    this.handleRowClick(item);
+                }
             }
         }
     }
