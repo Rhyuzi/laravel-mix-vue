@@ -15,3 +15,4 @@ Route::get('/get-tracking', 'App\Http\Controllers\PandusiwiAPI@getTracking')->na
 
 Route::get('/get-tracking-id', 'App\Http\Controllers\TrackingController@index')->name('get-tracking-id');
 Route::get('/get-resi', 'App\Http\Controllers\TrackingController@logTracking')->name('get-resi');
+Route::post('/shipment-data', 'App\Http\Controllers\PandusiwiAPI@shipDataTf')->name('shipment-data');

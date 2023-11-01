@@ -208,4 +208,12 @@
       }
   </script>
 <style>
+.left_col {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 230px; /* Adjust the width as needed */
+    overflow-y: auto;
+}
 </style>

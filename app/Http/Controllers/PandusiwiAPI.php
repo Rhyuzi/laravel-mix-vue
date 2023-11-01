@@ -67,4 +67,39 @@ class PandusiwiAPI extends Controller
 
         return response()->json($res,200);
     }
+
+    public function shipDataTf(Request $request){
+        $ch = curl_init();
+        $baseUrl = "https://production.pandulogistics.com/pandu/restapi/basic/raw_data/shipment_text_gen";
+        $params = [
+            'id' => $request->id
+        ];
+
+        // return $request->all();
+        // $url = $baseUrl . '?' . http_build_query($params);
+        curl_setopt($ch, CURLOPT_URL, $baseUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($request->all()));
+
+        $headers = [
+            'api-key: 23bd2707-5774-48a9-bcab-42cc1ea1ac9c',
+        ];
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+
+        // if (curl_errno($ch)) {
+        //     return 'cURL Error: ' . curl_error($ch);
+        // }
+
+        // curl_close($ch);
+
+        // $res = [
+        //     'error' => false,
+        //     'message' => 'Get Tracking berhasil!',
+        //     'data' => $response
+        // ];
+
+        return $response;
+    }
 }

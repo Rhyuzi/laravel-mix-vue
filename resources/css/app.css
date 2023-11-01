@@ -20,3 +20,13 @@
         width: 83.7%;
     }
 }
+
+@media (max-width: 768px) {
+    .col-md-3.left_col {
+      width: 100%; /* Make the sidebar full width for smaller screens */
+    }
+
+    .right_content {
+      margin-left: 0; /* Remove margin for smaller screens */
+    }
+  }
