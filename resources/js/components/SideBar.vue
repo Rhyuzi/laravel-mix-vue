@@ -184,29 +184,28 @@
 </div>
 </template>
 
-
-
-  <script>
-      export default {
-          data() {
-              return {
-                ddDash: true
-              }
-          },
-          mounted() {
-            console.debug('tou',this.$route.name)
-          },
-          methods: {
-            dropdownDash(){
-                if (this.ddDash) {
-                    this.ddDash = false
-                }else{
-                    this.ddDash = true
-                }
+<script>
+    export default {
+        data() {
+            return {
+            ddDash: true
             }
-          },
-      }
-  </script>
+        },
+        mounted() {
+        console.debug('tou',this.$route.name)
+        },
+        methods: {
+        dropdownDash(){
+            if (this.ddDash) {
+                this.ddDash = false
+            }else{
+                this.ddDash = true
+            }
+        }
+        },
+    }
+</script>
+
 <style>
 .left_col {
     position: fixed;

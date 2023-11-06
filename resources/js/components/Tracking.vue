@@ -35,11 +35,19 @@
                             </div>
                         </div>
 
-                    <Vue3EasyDataTable :headers="headers" :items="filteredData" @click-row="handleRowClick">
+                    <Vue3EasyDataTable border-cell :headers="headers" :items="filteredData" @click-row="handleRowClick">
                         <template #item-operation="{ item }">
                             <div>
                                 <button @click="handleDetailClick(item)" class="btn btn-default">Detail</button>
                             </div>
+                        </template>
+                        <template #pagination="{ prevPage, nextPage, isFirstPage, isLastPage }">
+                            <button :disabled="isFirstPage" @click="prevPage">
+                            prev page
+                            </button>
+                            <button :disabled="isLastPage" @click="nextPage">
+                            next page
+                            </button>
                         </template>
                     </Vue3EasyDataTable>
                      </div>
@@ -48,109 +56,89 @@
 </template>
 
 <script>
-// import { DataTable } from "@jobinsjp/vue3-datatable"
 import { mapGetters } from 'vuex'
 import SideBar from './SideBar.vue';
 import Vue3EasyDataTable from 'vue3-easy-data-table'
-import { get_data_city, getCoverageArea, get_data_service, getTrackingById } from '../api/api_helpers'
 import 'vue3-easy-data-table/dist/style.css';
 import TambahPickup from './PopupTambahPickup.vue';
 import Loading from './Loading.vue';
 
-    export default {
-        components: {
-            SideBar,
-            Loading,
-            Vue3EasyDataTable,
-            TambahPickup
+export default {
+    components: {
+        SideBar,
+        Loading,
+        Vue3EasyDataTable,
+        TambahPickup
+    },
+    data() {
+        return {
+            searchText: "",
+            popupCreate: false,
+            isLoading: false,
+            dataCity: [],
+            dataService: [],
+            pagination: null,
+            headers: [
+                { text: "ID", value: "ID" },
+                { text: "NO.RESI", value: "ConnoteNo"},
+                { text: "DIBUAT", value: "CreateTime"},
+                { text: "PENGIRIM", value: "ConnoteCustName"},
+                { text: "PENERIMA", value: "ConnoteRecvName"},
+                { text: "ISI BARANG", value: "ConnoteContents"},
+                { text: "Operasi", value: "operation"}
+            ],
+            filteredData: [],
+        }
+    },
+    computed: {
+        ...mapGetters({
+            dataTrack: 'tracking/getDataTracking',
+        }),
+    },
+    async mounted() {
+        await this.getDataTracking()
+    },
+    methods: {
+        async getDataTracking() {
+            this.isLoading = true
+            await this.$store.dispatch('tracking/getDataTracking')
+            console.error('ie yeh', this.dataTrack)
+            this.filteredData = this.dataTrack;
+            this.isLoading = false
         },
-        data() {
-            return {
-                searchText: "",
-                popupCreate: false,
-                isLoading: false,
-                dataCity: [],
-                dataService: [],
-                pagination: null,
-                headers: [
-                    { text: "ID", value: "ID" },
-                    { text: "NO.RESI", value: "ConnoteNo"},
-                    { text: "DIBUAT", value: "CreateTime"},
-                    { text: "PENGIRIM", value: "ConnoteCustName"},
-                    { text: "PENERIMA", value: "ConnoteRecvName"},
-                    { text: "ISI BARANG", value: "ConnoteContents"},
-                    { text: "Operasi", value: "operation"},
-                    // { text: "LAST ATTENDED", value: "lastAttended", width: 200},
-                    // { text: "COUNTRY", value: "country"},
-                ],
-                filteredData: [],
+        search() {
+            if (this.searchText.trim() === "") {
+                this.filteredData = this.dataTrack;
+            } else {
+                this.filteredData = this.dataTrack.filter((item) => {
+                return (
+                    String(item.ID).toLowerCase().includes(this.searchText.toLowerCase()) ||
+                    String(item.ConnoteNo).toLowerCase().includes(this.searchText.toLowerCase()) ||
+                    String(item.CreateTime).toLowerCase().includes(this.searchText.toLowerCase()) ||
+                    String(item.ConnoteCustName).toLowerCase().includes(this.searchText.toLowerCase()) ||
+                    String(item.ConnoteRecvName).toLowerCase().includes(this.searchText.toLowerCase()) ||
+                    String(item.ConnoteContents).toLowerCase().includes(this.searchText.toLowerCase())
+                );
+            });
             }
         },
-        computed: {
-            ...mapGetters({
-                dataTrack: 'tracking/getDataTracking',
-            }),
+        handleRowClick(item){
+            console.debug('data item handleRowClick', item)
+            this.$store.dispatch('tracking/putDataResi',item)
+            localStorage.setItem('resi',JSON.stringify(item))
+            const routeURL = this.$router.resolve({
+                    name: 'resi-tracking',
+                }).href;
 
-            // filteredData() {
-            //     if (this.searchText.trim() === "") {
-            //         return this.dataTrack;
-            //     }
-            //     return this.dataTrack.filter((item) => {
-            //     return (
-            //         String(item.ID).toLowerCase().includes(this.searchText.toLowerCase()) ||
-            //         String(item.ConnoteNo).toLowerCase().includes(this.searchText.toLowerCase()) ||
-            //         String(item.CreateTime).toLowerCase().includes(this.searchText.toLowerCase()) ||
-            //         String(item.ConnoteCustName).toLowerCase().includes(this.searchText.toLowerCase()) ||
-            //         String(item.ConnoteRecvName).toLowerCase().includes(this.searchText.toLowerCase()) ||
-            //         String(item.ConnoteContents).toLowerCase().includes(this.searchText.toLowerCase())
-            //     );
-            // });
-            // }
+                window.open(routeURL, '_blank');
+            // this.$router.push('/resi-tracking')
         },
-        async mounted() {
-            await this.getDataTracking()
-        },
-        methods: {
-            async getDataTracking() {
-                this.isLoading = true
-                await this.$store.dispatch('tracking/getDataTracking')
-                console.error('ie yeh', this.dataTrack)
-                this.filteredData = this.dataTrack;
-                this.isLoading = false
-            },
-            search() {
-                if (this.searchText.trim() === "") {
-                    this.filteredData = this.dataTrack;
-                } else {
-                    this.filteredData = this.dataTrack.filter((item) => {
-                    return (
-                        String(item.ID).toLowerCase().includes(this.searchText.toLowerCase()) ||
-                        String(item.ConnoteNo).toLowerCase().includes(this.searchText.toLowerCase()) ||
-                        String(item.CreateTime).toLowerCase().includes(this.searchText.toLowerCase()) ||
-                        String(item.ConnoteCustName).toLowerCase().includes(this.searchText.toLowerCase()) ||
-                        String(item.ConnoteRecvName).toLowerCase().includes(this.searchText.toLowerCase()) ||
-                        String(item.ConnoteContents).toLowerCase().includes(this.searchText.toLowerCase())
-                    );
-                });
-                }
-            },
-            handleRowClick(item){
-                console.debug('data item handleRowClick', item)
-                this.$store.dispatch('tracking/putDataResi',item)
-                localStorage.setItem('resi',JSON.stringify(item))
-                const routeURL = this.$router.resolve({
-                        name: 'resi-tracking',
-                    }).href;
-
-                    window.open(routeURL, '_blank');
-                // this.$router.push('/resi-tracking')
-            },
-            handleDetailClick(item) {
-                console.debug('data item handleDetailClick', item)
-                if (item) {
-                    this.handleRowClick(item);
-                }
+        handleDetailClick(item) {
+            // console.debug('data item handleDetailClick', item)
+            if (item) {
+                this.handleRowClick(item);
             }
         }
     }
+}
 </script>

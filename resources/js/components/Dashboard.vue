@@ -1,69 +1,39 @@
 <template>
     <TambahPickup v-if="popupCreate"></TambahPickup>
     <Loading v-if="isLoading"></Loading>
-    <!-- <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Data Pickup <small>Pelanggan</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <div>
-                        <button @click="popupCreate = true" class="btn btn-primary">Tambah Data</button>
-                    </div>
-                    <Vue3EasyDataTable :headers="headers" :items="dataPicOrd" />
-                </div>
-                </div> -->
-
-                <div class="">
-                    <SideBar></SideBar>
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Data Pickup <small>Pelanggan</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <div>
-                        <button @click="popupCreate = true" class="btn btn-primary">Tambah Data</button>
-                    </div>
-                    <Vue3EasyDataTable :headers="headers" :items="dataPicOrd" />
-                     </div>
-                </div>
-              </div>
+    <div class="">
+        <SideBar></SideBar>
+    <div class="x_panel">
+        <div class="x_title">
+        <h2>Data Pickup <small>Pelanggan</small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Settings 1</a>
+                </li>
+                <li><a href="#">Settings 2</a>
+                </li>
+            </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+        <div>
+            <button @click="popupCreate = true" class="btn btn-primary">Tambah Data</button>
+        </div>
+        <Vue3EasyDataTable :headers="headers" :items="dataPicOrd" />
+            </div>
+    </div>
+    </div>
 </template>
 
 <script>
-// import { DataTable } from "@jobinsjp/vue3-datatable"
 import { mapGetters } from 'vuex'
 import SideBar from './SideBar.vue';
 import Vue3EasyDataTable from 'vue3-easy-data-table'
@@ -92,9 +62,6 @@ import Loading from './Loading.vue';
                     { text: "PENGIRIM", value: "POrderCustName"},
                     { text: "PENERIMA", value: "POrderRecvName"},
                     { text: "ISI BARANG", value: "POrderIsi"},
-                    // { text: "WEIGHT (lbs)", value: "indicator.weight", sortable: true},
-                    // { text: "LAST ATTENDED", value: "lastAttended", width: 200},
-                    // { text: "COUNTRY", value: "country"},
                 ],
                 data: []
             }
